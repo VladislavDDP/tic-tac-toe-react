@@ -5,18 +5,26 @@ import React from "react";
 class Board extends React.Component {
     constructor(props) {
         super(props)
-        this.status = 'Next player: X'
+        this.status = `Next player: ${!this.xIsNext ? 'O' : 'X'}`
+        this.xIsNext = true
         this.state = {
             squares: Array(9).fill(null)
         }
     }
-    
+
+    handleClick(i) {
+        const squares = this.state.squares.slice();
+        squares[i] = !this.xIsNext ? 'O' : 'X';
+        this.setState({squares: squares});
+        this.xIsNext = !this.xIsNext;
+    }
     
     renderSquare(i) {
-        return <Square number={i} />
+        return <Square value={this.state.squares[i]} onClickField={() => this.handleClick(i) } />
     }    
 
     render() {
+        this.status = `Next player: ${!this.xIsNext ? 'O' : 'X'}`
         return (
             <div>
                 <div className="status">{this.status}</div>
